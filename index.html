@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>You’re invited to our civil wedding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#eef2f1; --card:#fbfcfb; --ink:#22302c; --muted:#5d6e68; --accent:#b8606b; --accent-ink:#fff; --line:#cfdad6;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#141b19; --card:#1c2623; --ink:#e8efec; --muted:#9db0a9; --accent:#d9808b; --accent-ink:#1a1214; --line:#33423d; color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Jost",system-ui,sans-serif;display:grid;place-items:center;padding:20px;overflow-x:hidden;overflow-y:auto}
+.card{width:min(440px,100%);background:var(--card);border:1px solid var(--line);border-radius:6px;padding:48px 32px 40px;text-align:center;position:relative}
+.card::before{content:"";position:absolute;inset:8px;border:1px solid var(--line);border-radius:3px;pointer-events:none}
+h1{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500;font-size:clamp(34px,9vw,46px);line-height:1.1;margin:0 0 18px}
+p{margin:0 auto 10px;color:var(--muted);line-height:1.6;max-width:32ch}
+.q{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-size:26px;color:var(--ink);margin:26px auto 28px}
+.details{margin:22px 0 0;font-size:15px;color:var(--ink);line-height:1.7}
+.row{display:flex;gap:14px;justify-content:center;align-items:center;min-height:52px}
+button,.btnlink{font:500 16px/1 "Jost",system-ui,sans-serif;border-radius:999px;padding:15px 34px;cursor:pointer;border:1px solid var(--accent)}
+.primary{background:var(--accent);color:var(--accent-ink)}
+.primary:hover{filter:brightness(1.06)}
+.primary:disabled{opacity:.6;cursor:default}
+#no{background:transparent;color:var(--accent);transition:left .45s cubic-bezier(.2,.8,.2,1),top .45s cubic-bezier(.2,.8,.2,1)}
+#no.free{position:fixed}
+button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+section{display:none}
+section.on{display:block}
+.heart{font-size:40px;color:var(--accent);margin-bottom:8px}
+.small{font-size:14px;margin-top:22px;max-width:none}
+.small a,.linkbtn{color:var(--accent);text-underline-offset:3px;background:none;border:0;padding:0;font:inherit;cursor:pointer;text-decoration:underline}
+label{display:block;text-align:left;font-size:14px;color:var(--muted);margin:16px 0 6px}
+input,textarea{width:100%;font:400 16px/1.4 "Jost",system-ui,sans-serif;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+textarea{resize:vertical;min-height:84px}
+.err{color:var(--accent);font-size:14px;min-height:20px;margin:10px auto 0}
+.actions{margin-top:20px}
+@media (prefers-reduced-motion:reduce){#no{transition:none}}
+</style>
+</head>
+<body>
+<main class="card">
+
+  <section id="ask" class="on">
+    <p>With joy in our hearts, we invite you to</p>
+    <h1>Our civil wedding</h1>
+    <div class="details" data-details></div>
+    <div class="q">Will you be there?</div>
+    <div class="row">
+      <button id="yes" class="primary" type="button">Yes</button>
+      <button id="no" type="button">No</button>
+    </div>
+    <p class="small">Can’t make it? <button id="cantbtn" class="linkbtn" type="button">Tell Gio why</button> 😅</p>
+  </section>
+
+  <section id="yesform">
+    <div class="heart">♥</div>
+    <h1>Yay!</h1>
+    <p>Let us know who’s coming.</p>
+    <label for="yname">Your name</label>
+    <input id="yname" type="text" autocomplete="name" maxlength="80">
+    <div class="err" id="yerr" role="alert"></div>
+    <div class="actions"><button id="ysend" class="primary" type="button">Send my RSVP</button></div>
+  </section>
+
+  <section id="cantform">
+    <h1>Aww, why not?</h1>
+    <p>Tell us what’s up and we’ll try to understand. 😅</p>
+    <label for="cname">Your name</label>
+    <input id="cname" type="text" autocomplete="name" maxlength="80">
+    <label for="creason">Reason why you can’t come</label>
+    <textarea id="creason" maxlength="300"></textarea>
+    <div class="err" id="cerr" role="alert"></div>
+    <div class="actions"><button id="csend" class="primary" type="button">Send</button></div>
+    <p class="small"><button id="cback" class="linkbtn" type="button">Back</button></p>
+  </section>
+
+  <section id="doneyes">
+    <div class="heart">♥</div>
+    <h1>See you there!</h1>
+    <p>Thank you for sharing this day with us. We can’t wait to celebrate with you.</p>
+    <div class="details" data-details></div>
+  </section>
+
+  <section id="donecant">
+    <div class="heart">♥</div>
+    <h1>Got it</h1>
+    <p>Thank you for letting us know. We’ll miss you, and we’ll celebrate with you soon.</p>
+  </section>
+
+</main>
+<script>
+// ===== Edit these =====
+var INFO = {
+  names: "Gio & Dane",
+  date: "Monday, February 8, 2027",
+  time: "",    // e.g. "10:00 AM"
+  place: "",   // e.g. "City Hall, Cebu"
+  phone: "09773039294"
+};
+// Paste your Google Apps Script web app URL here (ends with /exec)
+var SCRIPT_URL = "";
+// ======================
+
+var d = INFO.names + "<br>" + INFO.date + (INFO.time ? " at " + INFO.time : "") + (INFO.place ? "<br>" + INFO.place : "");
+document.querySelectorAll("[data-details]").forEach(function(el){ el.innerHTML = d; });
+
+function $(id){ return document.getElementById(id); }
+function show(id){
+  document.querySelectorAll("section").forEach(function(s){ s.classList.remove("on"); });
+  $(id).classList.add("on");
+  $("no").style.display = (id === "ask") ? "" : "none";
+}
+
+/* ---- Dodging No button ---- */
+var yes = $("yes"), no = $("no");
+function dodge(e){
+  if (e && e.cancelable) e.preventDefault();
+  var m = 12, w = no.offsetWidth, h = no.offsetHeight;
+  var vw = window.innerWidth, vh = window.innerHeight;
+  var yr = yes.getBoundingClientRect();
+  var cur = no.getBoundingClientRect();
+  var x, y, tries = 0, ok;
+  do {
+    x = m + Math.random() * (vw - w - 2 * m);
+    y = m + Math.random() * (vh - h - 2 * m);
+    var farYes = x > yr.right + 24 || x + w < yr.left - 24 || y > yr.bottom + 24 || y + h < yr.top - 24;
+    var farCur = Math.hypot(x - cur.left, y - cur.top) > 120;
+    ok = farYes && farCur;
+    tries++;
+  } while (!ok && tries < 40);
+  if (!no.classList.contains("free")) {
+    no.style.left = cur.left + "px";
+    no.style.top = cur.top + "px";
+    no.classList.add("free");
+    no.getBoundingClientRect();
+  }
+  no.style.left = x + "px";
+  no.style.top = y + "px";
+}
+["pointerenter","pointerdown","touchstart","mousedown","click","focus"].forEach(function(ev){
+  no.addEventListener(ev, dodge, {passive:false});
+});
+window.addEventListener("resize", function(){
+  if (no.classList.contains("free") && $("ask").classList.contains("on")) dodge();
+});
+
+/* ---- Sending to Google Sheets ---- */
+function send(payload){
+  if (!SCRIPT_URL) {
+    // Fallback: open a text message to Gio if no script URL is set yet
+    var msg = payload.going === "YES"
+      ? "Hi Gio and Dane! This is " + payload.name + ". Yes, I’ll be there at your civil wedding on Feb 8! 💍"
+      : "Hi Gio! This is " + payload.name + ". I can’t make it to your civil wedding because " + payload.reason;
+    window.location.href = "sms:" + INFO.phone + "?&body=" + encodeURIComponent(msg);
+    return Promise.resolve();
+  }
+  return fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {"Content-Type": "text/plain;charset=utf-8"},
+    body: JSON.stringify(payload)
+  });
+}
+
+$("yes").addEventListener("click", function(){ show("yesform"); $("yname").focus(); });
+$("cantbtn").addEventListener("click", function(){ show("cantform"); $("cname").focus(); });
+$("cback").addEventListener("click", function(){ show("ask"); });
+
+$("ysend").addEventListener("click", function(){
+  var name = $("yname").value.trim();
+  if (!name) { $("yerr").textContent = "Please type your name."; return; }
+  var btn = $("ysend"); btn.disabled = true; btn.textContent = "Sending…";
+  send({name: name, going: "YES", reason: ""}).then(function(){
+    show("doneyes");
+  }).catch(function(){
+    btn.disabled = false; btn.textContent = "Send my RSVP";
+    $("yerr").textContent = "Something went wrong. Please try again.";
+  });
+});
+
+$("csend").addEventListener("click", function(){
+  var name = $("cname").value.trim(), reason = $("creason").value.trim();
+  if (!name || !reason) { $("cerr").textContent = "Please add your name and a reason."; return; }
+  var btn = $("csend"); btn.disabled = true; btn.textContent = "Sending…";
+  send({name: name, going: "NO", reason: reason}).then(function(){
+    show("donecant");
+  }).catch(function(){
+    btn.disabled = false; btn.textContent = "Send";
+    $("cerr").textContent = "Something went wrong. Please try again.";
+  });
+});
+</script>
+</body>
+</html>
